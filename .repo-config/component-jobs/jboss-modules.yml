@@ -1,0 +1,16 @@
+env:
+  # Unfortunately GitHub Actions does not allow env vars to reference others so we need to duplicate the content
+  MAVEN_TEST_PARAMS: -DfailIfNoTests=false -fae
+java-version: 11
+# build-job is the job that the components builds in the issue yaml depending on this component will depend upon
+build-job: build
+jobs:
+  # Build the server skipping tests for speed since other jobs may depend on this. The maven repo is cached
+  build:
+    run:
+      - mvn: -V ${MAVEN_SETUP_CMD}
+      - shell: git diff
+      # Do not quote the usage of the env vars, or the quotes get wrapped in single quutes,
+      # which means they don't take effect (e.g. -DskipTests from JBOSS_MARSHALLING_MAVEN_EXTRA_PARAMS will not work!)
+      - mvn: install ${MAVEN_TEST_PARAMS} ${JBOSS_MARSHALLING_MAVEN_EXTRA_PARAMS}
+
