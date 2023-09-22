@@ -11,6 +11,8 @@ jobs:
     env:
       MAVEN_BUILD_EXTRA_PARAMS: -DlegacyBuild -DlegacyRelease -DskipTests
     run:
+      - mvn: -V ${MAVEN_SETUP_CMD}
+      - shell: git diff
       # Do not quote the usage of the env vars, or the quotes get wrapped in single quutes,
       # which means they don't take effect (e.g. -DskipTests from MAVEN_BUILD_EXTRA_PARAMS will not work!)
       - mvn: install ${MAVEN_TEST_PARAMS} ${MAVEN_BUILD_EXTRA_PARAMS}
@@ -32,32 +34,44 @@ jobs:
     # - scripts
     needs: [build]
     run:
+      - mvn: -V ${MAVEN_SETUP_CMD}
+      - shell: git diff
       - mvn: package ${MAVEN_SMOKE_TEST_PARAMS}
 
 
   ts-domain:
     needs: [build]
     run:
+      - mvn: -V ${MAVEN_SETUP_CMD}
+      - shell: git diff
       - mvn: package ${MAVEN_TEST_PARAMS} -pl testsuite/domain -Dts.timeout.factor=300
 
   ts-layers:
     needs: [build]
     run:
+      - mvn: -V ${MAVEN_SETUP_CMD}
+      - shell: git diff
       - mvn: package ${MAVEN_TEST_PARAMS} -Dts.layers -pl testsuite/layers
 
   ts-manualmode:
     needs: [build]
     run:
+      - mvn: -V ${MAVEN_SETUP_CMD}
+      - shell: git diff
       - mvn: package ${MAVEN_TEST_PARAMS} -pl testsuite/manualmode
 
   ts-patching:
     needs: [build]
     run:
+      - mvn: -V ${MAVEN_SETUP_CMD}
+      - shell: git diff
       - mvn: package ${MAVEN_TEST_PARAMS} -pl testsuite/patching
 
   ts-rbac:
     needs: [build]
     run:
+      - mvn: -V ${MAVEN_SETUP_CMD}
+      - shell: git diff
       - mvn: package ${MAVEN_TEST_PARAMS} -pl testsuite/rbac
 
   # TODO - add all the other modules
