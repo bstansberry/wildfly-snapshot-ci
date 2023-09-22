@@ -38,7 +38,6 @@ jobs:
       - shell: git diff
       - mvn: package ${MAVEN_SMOKE_TEST_PARAMS}
 
-
   ts-domain:
     needs: [build]
     run:
@@ -59,13 +58,6 @@ jobs:
       - mvn: -V ${MAVEN_SETUP_CMD}
       - shell: git diff
       - mvn: package ${MAVEN_TEST_PARAMS} -pl testsuite/manualmode
-
-  ts-patching:
-    needs: [build]
-    run:
-      - mvn: -V ${MAVEN_SETUP_CMD}
-      - shell: git diff
-      - mvn: package ${MAVEN_TEST_PARAMS} -pl testsuite/patching
 
   ts-rbac:
     needs: [build]
